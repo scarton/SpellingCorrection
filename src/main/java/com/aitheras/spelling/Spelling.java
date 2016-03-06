@@ -1,6 +1,8 @@
 package com.aitheras.spelling;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -43,11 +45,23 @@ class Spelling {
 	public void loadModels() throws IOException {
 		models = new ArrayList<>();
 		if (INDUSTRY_MODEL_NAME!=null) {
-			InputStream in = Spelling.class.getResourceAsStream('/' + INDUSTRY_MODEL_NAME + ".gz");
+			File imf = new File(INDUSTRY_MODEL_NAME); 
+			InputStream in;
+			if (!imf.exists()) {
+				in = Spelling.class.getResourceAsStream('/' + INDUSTRY_MODEL_NAME + ".gz");
+			} else {
+				in = new FileInputStream(imf); 
+			}
 			this.models.add(loadModel(in));
 		}
 		{
-			InputStream in = Spelling.class.getResourceAsStream('/' + MODEL_NAME + ".gz");
+			File mf = new File(MODEL_NAME); 
+			InputStream in;
+			if (!mf.exists()) {
+				in = Spelling.class.getResourceAsStream('/' + MODEL_NAME + ".gz");
+			} else {
+				in = new FileInputStream(mf); 
+			}
 			this.models.add(loadModel(in));
 		}
 		
