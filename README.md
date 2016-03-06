@@ -27,6 +27,17 @@ Using the spelling corrector in code:
         Spelling spelling = new Spelling();
         spelling.loadModels();
 ```
+If the model you are using is named differently than the default (spelling.model), you can specify it:
+```
+        spelling.setMODEL_NAME("my_model_name");
+```
+A feature of this version of the spell corrector is the use of two models. An "industry-specific" model 
+can be specified and will be used first for correction. The general model will be used second. This
+feature is to solve a specific class of problems: in the general case, ankel would be corrected to angel, as that is more probably the word meant. But by using a (perhaps) medical model, ankel would be corrected to ankle.
+```
+        spelling.setINDUSTRY_MODEL_NAME("specialized_model_name");
+```
+Setting model names must be called prior to loading the models.
 
 
  
