@@ -1,6 +1,8 @@
 # SpellingCorrection
 Probablistic spelling correction in Java, based on work by Norvic: http://norvig.com/spell-correct.html
 
+Java 8.
+
 Two classes. One to build a model, the other to perform spelling correction on a list of one or more words. Each has a main method.
 
 #Building a Model

@@ -33,8 +33,9 @@ class SpellingModelBuilder {
 	/**
 	 * Reads the file, tokenizes and builds Hashmap
 	 * 
-	 * @param file
-	 * @throws IOException
+	 * @param file - file with large corpus of text words
+	 * @throws IOException - if we can't read the file
+	 * @return Map of words and frequencies.
 	 */
 	public Map<String, Integer> loadBigText(File file) throws IOException {
 		Map<String, Integer> nWords = new HashMap<String, Integer>();
@@ -54,8 +55,9 @@ class SpellingModelBuilder {
 	 * Serializes that to a binary DataStream Zips the result and writes to the
 	 * specified path.
 	 * 
-	 * @param out
-	 * @throws IOException
+	 * @param nWords - Map of words and frequencies to export
+	 * @param path - file to which model will be written
+	 * @throws IOException - if we can't export the models or have a zip issue.
 	 */
 	public void exportModel(Map<String, Integer> nWords, File path) throws IOException {
 		FileOutputStream fos = new FileOutputStream(path.getPath() + "/" + MODEL_NAME + ".gz");
@@ -71,12 +73,16 @@ class SpellingModelBuilder {
 
 	/**
 	 * Command line to build a binary spelling model from a large collection of
-	 * properly spelled texts. SpellingModelBuilder largeTextFile.txt <
-	 * <optional_model_name>> If the model name isn't specified, creates
+	 * properly spelled texts. 
+	 * 
+	 * SpellingModelBuilder largeTextFile.txt optional_model_name
+	 * 
+	 * If the model name isn't specified, creates
+	 * 
 	 * "spelling.model" which is a binary file serialized to spelling.model.gz
 	 * 
-	 * @param args
-	 * @throws IOException
+	 * @param args - list of words to correct.
+	 * @throws IOException - if we can't export model files
 	 */
 	public static void main(String args[]) throws IOException {
 		if (args.length > 0) {

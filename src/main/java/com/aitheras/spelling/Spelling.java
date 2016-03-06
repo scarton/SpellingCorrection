@@ -39,8 +39,7 @@ class Spelling {
 	/**
 	 * Loads and returns the spelling model from a .gz resource on the classpath
 	 * 
-	 * @return
-	 * @throws IOException
+	 * @throws IOException if we cannot load the model
 	 */
 	public void loadModels() throws IOException {
 		models = new ArrayList<>();
@@ -70,8 +69,9 @@ class Spelling {
 	/**
 	 * Loads and returns the spelling model - a map of words and counts
 	 * 
-	 * @return
-	 * @throws IOException
+	 * @param in  - stream of the model file or resource
+	 * @return - map representing the model
+	 * @throws IOException if we can't load a model
 	 */
 	public Map<String, Integer> loadModel(InputStream in) throws IOException {
 		Map<String, Integer> model = new HashMap<String, Integer>();
@@ -92,23 +92,25 @@ class Spelling {
 	 * Creates a list of alternate word possibilities for this word. These are
 	 * not necessarily correctly spelled - just alternative forms. Assumes word
 	 * is in lower case There are 4 possible alternates created for the word:
+	 * </p>
 	 * <ul>
 	 * <li>Deletions - where one letter is removed, producing a set of words l
 	 * in size. (word would create ord, wrd, wod, wor)</li>
 	 * <li>Transpositions - where adjacent letters are swapped, creating word
-	 * set l-1 in size (word->owrd, wrod, wodr)</li>
+	 * set l-1 in size (word-&lt;owrd, wrod, wodr)</li>
 	 * <li>Replacements - where each letter is replaced by another a-z letter
-	 * creating a word set of 26(l+1) new words. (word->aord, bord, cord...)</li>
+	 * creating a word set of 26(l+1) new words. (word-&lt;aord, bord, cord...)</li>
 	 * <li>Insertions - where each character has added immediately following,
 	 * each of a-z, creating a word set of 54n+25.</li>
 	 * </ul>
+	 * <p>
 	 * Wondering if the replacements would work better if we chose from
 	 * characters near the source char on the keyboard? Also wondering if we
 	 * should also include numbers in the various options.
 	 * </p>
 	 * 
-	 * @param word
-	 * @return
+	 * @param word - a string word to correct. Should be lower cased.
+	 * @return List of word permuations
 	 */
 	private final ArrayList<String> edits(String word) {
 		ArrayList<String> result = new ArrayList<String>();
@@ -141,8 +143,9 @@ class Spelling {
 	 * account for character errors that are 2 apart.
 	 * </p>
 	 * 
-	 * @param word
-	 * @return
+	 * @param word - word to correct
+	 * @param lmodel - model against which to correct
+	 * @return FixedWords list or words that were corrected
 	 */
 	public final FixedWords correct(String word, Map<String, Integer> lmodel) {
 		if (lmodel.containsKey(word))
@@ -172,6 +175,12 @@ class Spelling {
 				new FixedWords(true,candidates.get(Collections.max(candidates.keySet()))) : 
 					new FixedWords(false,word);
 	}
+	
+	/**
+	 * Container for words that were either fixed or ignored
+	 * @author steve
+	 *
+	 */
 	class FixedWords {
 		public boolean fixed=false;
 		public String word="";
@@ -190,8 +199,8 @@ class Spelling {
 	 * case.
 	 * </p>
 	 * 
-	 * @param words
-	 * @return
+	 * @param words - array of words to correct. Variable arg...
+	 * @return String array of corrected words.
 	 */
 	public final String[] correct(String... words) {
 		ArrayList<String> fixed = new ArrayList<String>();
@@ -210,8 +219,8 @@ class Spelling {
 	 * To test with... supply words to check as args to the 
 	 * </p>
 	 * 
-	 * @param args
-	 * @throws IOException
+	 * @param args - list of words to correct
+	 * @throws IOException - on any file or resource failure.
 	 */
 	public static void main(String args[]) throws IOException {
 		Spelling spelling = new Spelling();
