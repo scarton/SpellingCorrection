@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.google.common.base.Joiner;
 
 /**
- * Unit test for spelling .
+ * Unit test for spelling.
  */
 public class SpellingTest {
 	private static Spelling speller;
@@ -23,6 +23,7 @@ public class SpellingTest {
 	public void testSpell() {
 		String words = "teh quic borwn fxo jumpde voer the lazyz dogg";
 		String cwords = Joiner.on(" ").join(speller.correct(words.split(" ")));
-		assertTrue(cwords.equals("the quick brown fox jumper over the lazy dog"));
+//		System.out.println(cwords);
+		assertTrue(cwords.equals("the quick brown fox jumped over the lazy dog"));
 	}
 }
